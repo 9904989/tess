@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+    <title>Text Test</title>
+</head>
+<body>
+    <!--<input type="file" id="uploader">-->
+    <input type="file" id="uploader" accept="image/*" capture="camera" />
+<script>
+
+    const exampleImage = 'https://tesseract.projectnaptha.com/img/eng_bw.png';
+    //const exampleImage = 'eng_bw.png';
+
+    const worker = Tesseract.createWorker({
+      logger: m => console.log(m)
+    });
+    Tesseract.setLogging(true);
+    work();
+
+    async function work() {
+      await worker.load();
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
+
+      let result = await worker.detect(exampleImage);
+      console.log(result.data);
+
+      result = await worker.recognize(exampleImage);
+      alert(result.data.text);
+
+      await worker.terminate();
+    }
+    </script>
+</body>
+</html>
